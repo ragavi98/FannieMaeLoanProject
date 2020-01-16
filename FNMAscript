@@ -1,0 +1,7 @@
+# !/bin/bash
+
+# Takes relevant columns and cuts them out for acquisition then performance
+
+cut -d "|" -f 1,3,6,9,12,16 2018Q1/Acquisition_2018Q1.txt > test1.txt
+cut -d "|" -f 1,4,5,13 2018Q1/Performance_2018Q1.txt > test2.txt
+ 
