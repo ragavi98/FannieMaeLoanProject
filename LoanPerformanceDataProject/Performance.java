@@ -28,8 +28,15 @@ public class Performance {
 	
 	public static void findPool(HashMap<String, Double[]> curr) {
 		HashMap<String, Double[]> finalLoans = new HashMap<>();
-		
-		
+		for (String s : curr.keySet()) {
+			finalLoans.put(s, curr.get(s));
+			if (sumUPB(finalLoans) > 40000000) {
+				finalLoans.remove(s);
+			}
+		}
+		finalLoans.forEach((k,v) -> System.out.println(k + " " + v[0] + " " + v[1]));
+		System.out.println("Total UPB: " + sumUPB(finalLoans));
+		System.out.println("WAC: " + findWAC(finalLoans));
 	}
 	
 	public static void joinLoanNums(HashSet<String> acqSet, HashMap<String, Double[]> m) {
@@ -40,12 +47,13 @@ public class Performance {
 		HashMap<String, Double[]> map = new HashMap<>();
 		
 		try {
-			RandomAccessFile file = new RandomAccessFile(fileName,"r");
+			File file = new File(fileName);
+			BufferedReader br = new BufferedReader(new FileReader(file));
 			String str;
 			String pattern = "^(\\d+)\\|(\\d+\\.\\d+)\\|(\\d+\\.\\d+)\\|(\\d*)$";
 			Pattern p = Pattern.compile(pattern);
 			
-			while ((str = file.readLine()) != null) {
+			while ((str = br.readLine()) != null) {
 				Matcher m = p.matcher(str);
 				if (m.find()) {
 					String name = m.group(1);
@@ -65,11 +73,12 @@ public class Performance {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		map.forEach((k,v) -> System.out.println(k + " " + v[0] + " " + v[1]));
+		// map.forEach((k,v) -> System.out.println(k + " " + v[0] + " " + v[1]));
+		findPool(map);
 	}
 
 	public static void main(String[] args) {
-		initialParse("src/tst1",1);
+		initialParse("src/perf1.txt",1);
 		
 
 	}
